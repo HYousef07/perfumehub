@@ -17,6 +17,7 @@ class Category(models.Model):
 class Perfume(models.Model):
     name = models.CharField(max_length=100)
     brand = models.ForeignKey('Brand', on_delete=models.CASCADE)
+    category = models.ManyToManyField('Category')
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     rrp = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
