@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block metadescription %}
+    Browse our collection of perfumes and find your perfect fragrance.
+{% endblock %}
+
+{% block title %}
+    {% if category %}
+        {{ category.name }} - Scently
+    {% else %}
+        Perfume Catalogue - Scently
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <div class="text-center">
+        <br>
+
+        {% if category %}
+            <h1 class="text-center my_title">
+                {{ category.name }}
+            </h1>
+        {% else %}
+            <h1 class="text-center my_title">
+                All Perfumes
+            </h1>
+        {% endif %}
+
+        <br>
+    </div>
+
+    <div class="container">
+        <div class="row mx-auto">
+
+            {% for perfume in perfumes %}
+
+                <div class="my_bottom_margin col-9 col-sm-12 col-md-6 col-lg-4">
+                    <div class="card text-center">
+
+                        {% if perfume.image %}
+                            <a href="#">
+                                <img
+                                    class="card-img-top my_image"
+                                    src="{{ perfume.image.url }}"
+                                    alt="{{ perfume.name }}"
+                                >
+                            </a>
+                        {% endif %}
+
+                        <div class="card-body">
+
+                            <p class="text-uppercase">
+                                {{ perfume.brand.name }}
+                            </p>
+
+                            <h4>
+                                {{ perfume.name }}
+                            </h4>
+
+                            {% if perfume.rrp and perfume.rrp > perfume.price %}
+                                <p>
+                                    <del>Was €{{ perfume.rrp }}</del>
+                                </p>
+                            {% endif %}
+
+                            <h4>
+                                Now €{{ perfume.price }}
+                            </h4>
+
+                            <p>
+                                {{ perfume.size_ml }}ml
+                            </p>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            {% empty %}
+
+                <div class="col-12 text-center">
+                    <p>
+                        No perfumes found in this category.
+                    </p>
+                </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+    <br>
+    <br>
+
+</div>
+
+{% endblock %}

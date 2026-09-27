@@ -1,0 +1,77 @@
+<div class="container-fluid bg-light">
+
+    <div class="container">
+
+        <div class="d-flex justify-content-end py-2">
+
+            {% if user.is_authenticated %}
+
+                <div class="dropdown">
+
+                    <a class="dropdown-toggle text-decoration-none"
+                       href="#"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+
+                        Welcome, {{ user.username }}
+
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                Profile
+                            </a>
+                        </li>
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+
+                            <form method="post"
+                                  action="{% url 'logout' %}">
+
+                                {% csrf_token %}
+
+                                <button type="submit"
+                                        class="dropdown-item">
+
+                                    Sign Out
+
+                                </button>
+
+                            </form>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            {% else %}
+
+                <a href="{% url 'accounts:signup' %}"
+                   class="btn btn-outline-primary btn-sm">
+
+                    Sign Up
+
+                </a>
+
+                <a href="{% url 'login' %}"
+                   class="btn btn-primary btn-sm ms-2">
+
+                    Sign In
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
