@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Perfume, Category
-
+from django.views.generic import DetailView
 
 def prod_list(request):
     perfumes = Perfume.objects.all()
@@ -22,3 +22,8 @@ def products_by_category(request, category_id):
         'categories': categories,
         'category': category
     })
+
+class PerfumeDetailView(DetailView):
+    model = Perfume
+    template_name = 'perfumes/product.html'
+    context_object_name = 'perfume'

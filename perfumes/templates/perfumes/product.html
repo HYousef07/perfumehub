@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block metadescription %}
+    {{ perfume.description }}
+{% endblock %}
+
+{% block title %}
+    {{ perfume.name }} - Scently
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-12 col-md-6 text-center">
+
+            {% if perfume.image %}
+                <img
+                    src="{{ perfume.image.url }}"
+                    alt="{{ perfume.name }}"
+                    class="img-fluid"
+                >
+            {% endif %}
+
+        </div>
+
+        <div class="col-12 col-md-6">
+
+            <h1>{{ perfume.name }}</h1>
+
+            <p>{{ perfume.brand.name }}</p>
+
+            <p>{{ perfume.description }}</p>
+
+            <p>{{ perfume.size_ml }}ml</p>
+
+            {% if perfume.rrp and perfume.rrp > perfume.price %}
+                <p>
+                    <del>Was €{{ perfume.rrp }}</del>
+                </p>
+            {% endif %}
+
+            <h3>Now €{{ perfume.price }}</h3>
+
+            <p>Categories:</p>
+
+            {% for category in perfume.category.all %}
+                <a href="{% url 'perfumes:products_by_category' category.id %}">
+                    {{ category.name }}
+                </a>
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

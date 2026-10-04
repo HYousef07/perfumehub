@@ -41,7 +41,7 @@
                     <div class="card text-center">
 
                         {% if perfume.image %}
-                            <a href="#">
+                            <a href="{{ perfume.get_absolute_url }}">
                                 <img
                                     class="card-img-top my_image"
                                     src="{{ perfume.image.url }}"
