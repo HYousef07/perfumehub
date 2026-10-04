@@ -2,7 +2,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import DetailView
 from django.contrib.auth import login
 from django.contrib.auth.models import Group
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from .forms import CustomUserCreationForm
 from .models import CustomUser, Profile
@@ -31,6 +31,8 @@ class ProfileEditView(UpdateView):
     model = Profile
     template_name = 'registration/edit_profile.html'
     fields = ['date_of_birth', 'fav_author']
+    def get_success_url(self):
+        return reverse('accounts:show_profile', kwargs={'pk' : self.object.pk})
 
 
 class ProfilePageView(DetailView):
