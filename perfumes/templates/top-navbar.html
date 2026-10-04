@@ -6,67 +6,65 @@
 
             {% if user.is_authenticated %}
 
-                <div class="dropdown">
+            <div class="dropdown">
 
-                    <a class="dropdown-toggle text-decoration-none"
-                       href="#"
-                       role="button"
-                       data-bs-toggle="dropdown"
-                       aria-expanded="false">
+                <a class="dropdown-toggle text-decoration-none" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
 
-                        Welcome, {{ user.username }}
+                    Welcome, {{ user.username }}
 
-                    </a>
+                </a>
 
-                    <ul class="dropdown-menu dropdown-menu-end">
+                <ul class="dropdown-menu dropdown-menu-end">
 
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                Profile
-                            </a>
-                        </li>
+                    <li>
+                        <a class="dropdown-item" href="{% url 'accounts:show_profile' user.profile.pk %}">
+                            View Profile
+                        </a>
+                    </li>
 
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
+                    <li>
+                        <a class="dropdown-item" href="{% url 'accounts:edit_profile' user.profile.pk %}">
+                            Edit Profile
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
 
-                        <li>
+                    <li>
 
-                            <form method="post"
-                                  action="{% url 'logout' %}">
+                        <form method="post" action="{% url 'logout' %}">
 
-                                {% csrf_token %}
+                            {% csrf_token %}
 
-                                <button type="submit"
-                                        class="dropdown-item">
+                            <button type="submit" class="dropdown-item">
 
-                                    Sign Out
+                                Sign Out
 
-                                </button>
+                            </button>
 
-                            </form>
+                        </form>
 
-                        </li>
+                    </li>
 
-                    </ul>
+                </ul>
 
-                </div>
+            </div>
 
             {% else %}
 
-                <a href="{% url 'accounts:signup' %}"
-                   class="btn btn-outline-primary btn-sm">
+            <a href="{% url 'accounts:signup' %}" class="btn btn-outline-primary btn-sm">
 
-                    Sign Up
+                Sign Up
 
-                </a>
+            </a>
 
-                <a href="{% url 'login' %}"
-                   class="btn btn-primary btn-sm ms-2">
+            <a href="{% url 'login' %}" class="btn btn-primary btn-sm ms-2">
 
-                    Sign In
+                Sign In
 
-                </a>
+            </a>
 
             {% endif %}
 
