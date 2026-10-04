@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
 # Create your models here.
 
@@ -25,6 +27,12 @@ class Perfume(models.Model):
     size_ml = models.PositiveIntegerField()
     launch_year = models.PositiveIntegerField(null=True, blank=True)
     image = models.ImageField(upload_to='perfume_images/')
+    image_thumbnail = ImageSpecField(
+    source='image',
+    processors=[ResizeToFill(300, 300)],
+    format='JPEG',
+    options={'quality': 80}
+)
     
     def __str__(self):
         return self.name
