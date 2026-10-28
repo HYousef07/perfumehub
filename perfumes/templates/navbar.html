@@ -6,13 +6,8 @@
             Scently
         </a>
 
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#mainNavbar"
-                aria-controls="mainNavbar"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+            aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
 
             <span class="navbar-toggler-icon"></span>
 
@@ -23,13 +18,13 @@
             <ul class="navbar-nav me-auto">
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="/">
                         Home
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{% url 'perfumes:all_products' %}">
                         Perfumes
                     </a>
                 </li>
@@ -37,6 +32,20 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">
                         Categories
+                    </a>
+                </li>
+
+            </ul>
+
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cart:cart_detail' %}">
+                        <i class="fas fa-shopping-cart"></i>
+                        Cart
+                        <span class="badge bg-primary">
+                            {{ cart_item_count }}
+                        </span>
                     </a>
                 </li>
 
