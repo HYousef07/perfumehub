@@ -1,5 +1,6 @@
 
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 from .models import Cart, CartItem
 from perfumes.models import Perfume
 
@@ -11,6 +12,7 @@ def _cart_id(request):
     return request.session.session_key
 
 
+@require_POST
 def add_cart(request, perfume_id):
     perfume = get_object_or_404(Perfume, id=perfume_id)
 
@@ -59,3 +61,37 @@ def cart_detail(request):
             'total': total,
         }
     )
+
+
+@require_POST
+def cart_remove(request, perfume_id):
+    cart = Cart.objects.get(cart_id=_cart_id(request))
+    perfume = get_object_or_404(Perfume, id=perfume_id)
+
+    cart_item = CartItem.objects.get(
+        perfume=perfume,
+        cart=cart
+    )
+
+    if cart_item.quantity > 1:
+        cart_item.quantity -= 1
+        cart_item.save()
+    else:
+        cart_item.delete()
+
+    return redirect('cart:cart_detail')
+
+
+@require_POST
+def full_remove(request, perfume_id):
+    cart = Cart.objects.get(cart_id=_cart_id(request))
+    perfume = get_object_or_404(Perfume, id=perfume_id)
+
+    cart_item = CartItem.objects.get(
+        perfume=perfume,
+        cart=cart
+    )
+
+    cart_item.delete()
+
+    return redirect('cart:cart_detail')

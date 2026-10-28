@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block metadescription %}
-Review the perfumes in your Scently shopping cart.
+Review and manage the perfumes in your Scently shopping cart.
 {% endblock %}
 
 {% block title %}
@@ -24,6 +24,7 @@ Shopping Cart - Scently
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Subtotal</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
 
@@ -36,20 +37,43 @@ Shopping Cart - Scently
                         </a>
                     </td>
 
-                    <td>
-                        {{ cart_item.perfume.brand.name }}
-                    </td>
+                    <td>{{ cart_item.perfume.brand.name }}</td>
+
+                    <td>€{{ cart_item.perfume.price|floatformat:2 }}</td>
 
                     <td>
-                        €{{ cart_item.perfume.price }}
+                        <div class="d-flex justify-content-center align-items-center gap-2">
+
+                            <form action="{% url 'cart:cart_remove' cart_item.perfume.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-secondary btn-sm"
+                                    aria-label="Decrease quantity">
+                                    −
+                                </button>
+                            </form>
+
+                            <span>{{ cart_item.quantity }}</span>
+
+                            <form action="{% url 'cart:add_cart' cart_item.perfume.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-secondary btn-sm"
+                                    aria-label="Increase quantity">
+                                    +
+                                </button>
+                            </form>
+
+                        </div>
                     </td>
 
-                    <td>
-                        {{ cart_item.quantity }}
-                    </td>
+                    <td>€{{ cart_item.sub_total|floatformat:2 }}</td>
 
                     <td>
-                        €{{ cart_item.sub_total }}
+                        <form action="{% url 'cart:full_remove' cart_item.perfume.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Remove
+                            </button>
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}
@@ -57,7 +81,7 @@ Shopping Cart - Scently
         </table>
     </div>
 
-    <div class="text-end">
+    <div class="text-end mt-3">
         <h4>Total: €{{ total|floatformat:2 }}</h4>
     </div>
 
@@ -65,11 +89,7 @@ Shopping Cart - Scently
 
     <div class="text-center">
         <h3>Your shopping cart is empty.</h3>
-
-        <p>
-            Browse our perfume collection to find your
-            favourite fragrance.
-        </p>
+        <p>Browse our perfume collection to find your favourite fragrance.</p>
     </div>
 
     {% endif %}
