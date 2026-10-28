@@ -2,11 +2,11 @@
 {% load static %}
 
 {% block metadescription %}
-    {{ perfume.description }}
+{{ perfume.description }}
 {% endblock %}
 
 {% block title %}
-    {{ perfume.name }} - Scently
+{{ perfume.name }} - Scently
 {% endblock %}
 
 {% block content %}
@@ -18,11 +18,7 @@
         <div class="col-12 col-md-6 text-center">
 
             {% if perfume.image %}
-                <img
-                    src="{{ perfume.image_thumbnail.url }}"
-                    alt="{{ perfume.name }}"
-                    class="img-fluid"
-                >
+            <img src="{{ perfume.image_thumbnail.url }}" alt="{{ perfume.name }}" class="img-fluid">
             {% endif %}
 
         </div>
@@ -38,19 +34,26 @@
             <p>{{ perfume.size_ml }}ml</p>
 
             {% if perfume.rrp and perfume.rrp > perfume.price %}
-                <p>
-                    <del>Was €{{ perfume.rrp }}</del>
-                </p>
+            <p>
+                <del>Was €{{ perfume.rrp }}</del>
+            </p>
             {% endif %}
 
             <h3>Now €{{ perfume.price }}</h3>
 
+            <form action="{% url 'cart:add_cart' perfume.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">
+                    Add to Cart
+                </button>
+            </form>
+
             <p>Categories:</p>
 
             {% for category in perfume.category.all %}
-                <a href="{% url 'perfumes:products_by_category' category.id %}">
-                    {{ category.name }}
-                </a>
+            <a href="{% url 'perfumes:products_by_category' category.id %}">
+                {{ category.name }}
+            </a>
             {% endfor %}
 
         </div>
