@@ -1,33 +1,38 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Perfume, Category, Brand
-from django.views.generic import DetailView
+
 from decimal import Decimal, InvalidOperation
+
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.shortcuts import get_object_or_404, render
+from django.views.generic import DetailView
+
+from .models import Brand, Category, Perfume
+
 
 def render_catalogue(request, perfumes, category=None):
     query = request.GET.get('q', '').strip()
-    brands = [int(b) for b in request.GET.getlist('brand') if b.isdigit()]
-    categories_selected = [int(c) for c in request.GET.getlist('category') if c.isdigit()]
+    brands = [
+        int(b) for b in request.GET.getlist('brand') if b.isdigit()
+    ]
+    categories_selected = [
+        int(c) for c in request.GET.getlist('category') if c.isdigit()
+    ]
 
     min_price = request.GET.get('min_price', '0')
     max_price = request.GET.get('max_price', '500')
 
     if query:
         perfumes = perfumes.filter(
-            Q(name__icontains=query) |
-            Q(description__icontains=query)
+            Q(name__icontains=query)
+            | Q(description__icontains=query)
         )
 
     if brands:
         perfumes = perfumes.filter(brand_id__in=brands)
 
     if categories_selected:
-        perfumes = perfumes.filter(
-            category__id__in=categories_selected
-        )
+        perfumes = perfumes.filter(category__id__in=categories_selected)
 
-    
     try:
         minimum = Decimal(min_price or '0')
         maximum = Decimal(max_price or '500')
@@ -41,18 +46,16 @@ def render_catalogue(request, perfumes, category=None):
         ):
             raise InvalidOperation
 
-        perfumes = perfumes.filter(
-            price__gte=minimum,
-            price__lte=maximum
-        )
-
     except (InvalidOperation, ValueError):
         min_price = '0'
         max_price = '500'
-        perfumes = perfumes.filter(
-            price__gte=Decimal('0'),
-            price__lte=Decimal('500')
-        )
+        minimum = Decimal('0')
+        maximum = Decimal('500')
+
+    perfumes = perfumes.filter(
+        price__gte=minimum,
+        price__lte=maximum
+    )
 
     paginator = Paginator(perfumes.distinct(), 6)
     page_obj = paginator.get_page(request.GET.get('page'))
@@ -71,7 +74,6 @@ def render_catalogue(request, perfumes, category=None):
     })
 
 
-
 def prod_list(request):
     return render_catalogue(request, Perfume.objects.all())
 
@@ -84,7 +86,6 @@ def products_by_category(request, category_id):
         Perfume.objects.filter(category=category),
         category
     )
-
 
 
 class PerfumeDetailView(DetailView):

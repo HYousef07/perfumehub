@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 {% load static %}
 
@@ -6,15 +7,14 @@ Browse our collection of perfumes and find your perfect fragrance.
 {% endblock %}
 
 {% block title %}
-{% if category %}
-{{ category.name }} - Scently
-{% else %}
-Perfume Catalogue - Scently
-{% endif %}
+    {% if category %}
+        {{ category.name }} - Scently
+    {% else %}
+        Perfume Catalogue - Scently
+    {% endif %}
 {% endblock %}
 
 {% block content %}
-
 
 <style>
     .filter-overlay {
@@ -22,7 +22,6 @@ Perfume Catalogue - Scently
         inset: 0;
         background: rgba(0, 0, 0, 0.4);
         z-index: 1000;
-
         opacity: 0;
         visibility: hidden;
         transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -38,7 +37,6 @@ Perfume Catalogue - Scently
         background: white;
         padding: 25px;
         overflow-y: auto;
-
         transform: translateX(100%);
         transition: transform 0.3s ease;
     }
@@ -79,6 +77,10 @@ Perfume Catalogue - Scently
         margin-bottom: 8px;
     }
 
+    .filter-sidebar input[type="number"] {
+        width: 100%;
+    }
+
     @media (max-width: 480px) {
         .filter-sidebar {
             width: 100%;
@@ -91,13 +93,21 @@ Perfume Catalogue - Scently
     <div class="container my-3">
         <div class="row g-2">
             <div class="col">
-                <input type="search" name="q" class="form-control" placeholder="Search perfumes by name or description"
-                    value="{{ search_query }}">
+                <input
+                    type="search"
+                    name="q"
+                    class="form-control"
+                    placeholder="Search perfumes by name or description..."
+                    value="{{ search_query }}"
+                >
             </div>
 
             <div class="col-auto">
-                <button type="button" class="btn btn-dark"
-                    onclick="document.getElementById('filter-panel').classList.add('open')">
+                <button
+                    type="button"
+                    class="btn btn-dark"
+                    onclick="document.getElementById('filter-panel').classList.add('open')"
+                >
                     ☰ All Filters
                 </button>
             </div>
@@ -108,45 +118,84 @@ Perfume Catalogue - Scently
         <div class="filter-sidebar">
             <div class="d-flex justify-content-between align-items-center">
                 <h3>All Filters</h3>
-                <button type="button" class="btn-close" aria-label="Close filters"
-                    onclick="document.getElementById('filter-panel').classList.remove('open')"></button>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    aria-label="Close filters"
+                    onclick="document.getElementById('filter-panel').classList.remove('open')"
+                ></button>
             </div>
 
             <div class="filter-section">
-                <h5>Price Range</h5>
+                <h5>Price Range (€)</h5>
 
                 <div class="d-flex gap-2">
-                    <div>
-                        <label for="min-price">Min (€)</label>
-                        <input id="min-price" name="min_price" type="number" class="form-control" min="0" max="500"
-                            step="1" value="{{ min_price }}">
+                    <div class="flex-fill">
+                        <label for="min-price">Minimum price</label>
+                        <input
+                            id="min-price"
+                            name="min_price"
+                            type="number"
+                            class="form-control"
+                            min="0"
+                            max="500"
+                            step="1"
+                            value="{{ min_price }}"
+                        >
                     </div>
 
-                    <div>
-                        <label for="max-price">Max (€)</label>
-                        <input id="max-price" name="max_price" type="number" class="form-control" min="0" max="500"
-                            step="1" value="{{ max_price }}">
+                    <div class="flex-fill">
+                        <label for="max-price">Maximum price</label>
+                        <input
+                            id="max-price"
+                            name="max_price"
+                            type="number"
+                            class="form-control"
+                            min="0"
+                            max="500"
+                            step="1"
+                            value="{{ max_price }}"
+                        >
                     </div>
                 </div>
 
-                <label for="min-slider">Minimum price</label>
-                <input id="min-slider" type="range" min="0" max="500" value="{{ min_price|default:'0' }}">
+                <label for="min-slider">Minimum price slider</label>
+                <input
+                    id="min-slider"
+                    type="range"
+                    min="0"
+                    max="500"
+                    step="1"
+                    value="{{ min_price|default:'0' }}"
+                >
 
-                <label for="max-slider">Maximum price</label>
-                <input id="max-slider" type="range" min="0" max="500" value="{{ max_price|default:'500' }}">
+                <label for="max-slider">Maximum price slider</label>
+                <input
+                    id="max-slider"
+                    type="range"
+                    min="0"
+                    max="500"
+                    step="1"
+                    value="{{ max_price|default:'500' }}"
+                >
             </div>
-
-
 
             <div class="filter-section">
                 <h5>Brands</h5>
 
                 {% for brand in brands %}
-                <label>
-                    <input type="checkbox" name="brand" value="{{ brand.id }}" 
-                    {% if brand.id in selected_brands %}checked{% endif %}>
-                    {{ brand.name }}
-                </label>
+                    <label>
+                        <input
+                            type="checkbox"
+                            name="brand"
+                            value="{{ brand.id }}"
+                            {% if brand.id in selected_brands %}checked{% endif %}
+                        >
+                        {{ brand.name }}
+                    </label>
+                {% empty %}
+                    <p>No brands available.</p>
                 {% endfor %}
             </div>
 
@@ -154,23 +203,29 @@ Perfume Catalogue - Scently
                 <h5>Categories</h5>
 
                 {% for cat in categories %}
-                <label>
-                    <input type="checkbox" name="category" value="{{ cat.id }}" 
-                    {% if cat.id in selected_categories %}checked{% endif %}>
-                    {{ cat.name }}
-                </label>
+                    <label>
+                        <input
+                            type="checkbox"
+                            name="category"
+                            value="{{ cat.id }}"
+                            {% if cat.id in selected_categories %}checked{% endif %}
+                        >
+                        {{ cat.name }}
+                    </label>
+                {% empty %}
+                    <p>No categories available.</p>
                 {% endfor %}
             </div>
-
-
 
             <div class="filter-actions">
                 <button type="submit" class="btn btn-dark">
                     Apply Filters
                 </button>
 
-                <a class="btn btn-outline-secondary"
-                    href="{% if category %}{% url 'perfumes:products_by_category' category.id %}{% else %}{% url 'perfumes:all_products' %}{% endif %}">
+                <a
+                    class="btn btn-outline-secondary"
+                    href="{% if category %}{% url 'perfumes:products_by_category' category.id %}{% else %}{% url 'perfumes:all_products' %}{% endif %}"
+                >
                     Clear All
                 </a>
             </div>
@@ -183,9 +238,11 @@ Perfume Catalogue - Scently
     const maxPrice = document.getElementById('max-price');
     const minSlider = document.getElementById('min-slider');
     const maxSlider = document.getElementById('max-slider');
+    const filterPanel = document.getElementById('filter-panel');
 
     minSlider.addEventListener('input', function () {
         minPrice.value = this.value;
+
         if (Number(minPrice.value) > Number(maxPrice.value)) {
             maxPrice.value = this.value;
             maxSlider.value = this.value;
@@ -194,6 +251,7 @@ Perfume Catalogue - Scently
 
     maxSlider.addEventListener('input', function () {
         maxPrice.value = this.value;
+
         if (Number(maxPrice.value) < Number(minPrice.value)) {
             minPrice.value = this.value;
             minSlider.value = this.value;
@@ -208,122 +266,105 @@ Perfume Catalogue - Scently
         maxSlider.value = this.value;
     });
 
-    document.getElementById('filter-panel').addEventListener('click', function (event) {
-        if (event.target === this) {
-            this.classList.remove('open');
+    filterPanel.addEventListener('click', function (event) {
+        if (event.target === filterPanel) {
+            filterPanel.classList.remove('open');
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            filterPanel.classList.remove('open');
         }
     });
 </script>
 
-
-<div>
+<div class="container">
     <div class="text-center">
         <br>
 
         {% if category %}
-        <h1 class="text-center my_title">
-            {{ category.name }}
-        </h1>
+            <h1 class="text-center my_title">{{ category.name }}</h1>
         {% else %}
-        <h1 class="text-center my_title">
-            All Perfumes
-        </h1>
+            <h1 class="text-center my_title">All Perfumes</h1>
         {% endif %}
 
         <br>
     </div>
 
-    <div class="container">
-        <div class="row mx-auto">
-
-            {% for perfume in perfumes %}
-
+    <div class="row mx-auto">
+        {% for perfume in perfumes %}
             <div class="my_bottom_margin col-9 col-sm-12 col-md-6 col-lg-4">
                 <div class="card text-center">
-
                     {% if perfume.image %}
-                    <a href="{{ perfume.get_absolute_url }}">
-                        <img class="card-img-top my_image" src="{{ perfume.image_thumbnail.url }}"
-                            alt="{{ perfume.name }}">
-                    </a>
+                        <a href="{{ perfume.get_absolute_url }}">
+                            <img
+                                class="card-img-top my_image"
+                                src="{{ perfume.image_thumbnail.url }}"
+                                alt="{{ perfume.name }}"
+                            >
+                        </a>
                     {% endif %}
 
                     <div class="card-body">
+                        <p class="text-uppercase">{{ perfume.brand.name }}</p>
 
-                        <p class="text-uppercase">
-                            {{ perfume.brand.name }}
-                        </p>
-
-                        <h4>
-                            {{ perfume.name }}
-                        </h4>
+                        <h4>{{ perfume.name }}</h4>
 
                         {% if perfume.rrp and perfume.rrp > perfume.price %}
-                        <p>
-                            <del>Was €{{ perfume.rrp }}</del>
-                        </p>
+                            <p><del>Was €{{ perfume.rrp }}</del></p>
                         {% endif %}
 
-                        <h4>
-                            Now €{{ perfume.price }}
-                        </h4>
+                        <h4>Now €{{ perfume.price }}</h4>
 
-                        <p>
-                            {{ perfume.size_ml }}ml
-                        </p>
-
+                        <p>{{ perfume.size_ml }}ml</p>
                     </div>
-
                 </div>
             </div>
-
-            {% empty %}
-
+        {% empty %}
             <div class="col-12 text-center">
                 {% if search_query %}
-                <p>No perfumes found matching "{{ search_query }}".</p>
+                    <p>No perfumes found matching "{{ search_query }}".</p>
                 {% else %}
-                <p>No perfumes found in this category.</p>
+                    <p>No perfumes match your selected filters.</p>
                 {% endif %}
             </div>
-
-            {% endfor %}
-
-        </div>
+        {% endfor %}
     </div>
-
 
     {% if page_obj.paginator.num_pages > 1 %}
-    <div class="text-center my-4">
+        <div class="text-center my-4">
+            {% if page_obj.has_previous %}
+                <a
+                    class="btn btn-outline-secondary btn-sm"
+                    href="?q={{ search_query|urlencode }}{% for brand_id in selected_brands %}&amp;brand={{ brand_id }}{% endfor %}{% for category_id in selected_categories %}&amp;category={{ category_id }}{% endfor %}&amp;min_price={{ min_price|urlencode }}&amp;max_price={{ max_price|urlencode }}&amp;page={{ page_obj.previous_page_number }}"
+                >
+                    Previous
+                </a>
+            {% endif %}
 
-        {% if page_obj.has_previous %}
-        <a class="btn btn-outline-secondary btn-sm"
-            href="?q={{ search_query|urlencode }}{% for brand_id in selected_brands %}&brand={{ brand_id|urlencode }}{% endfor %}{% for category_id in selected_categories %}&category={{ category_id|urlencode }}{% endfor %}&min_price={{ min_price|urlencode }}&max_price={{ max_price|urlencode }}&page={{ page_obj.previous_page_number }}">
-            Previous
-        </a>
-        {% endif %}
+            {% for page_number in page_obj.paginator.page_range %}
+                <a
+                    class="btn btn-sm {% if page_obj.number == page_number %}btn-primary{% else %}btn-outline-secondary{% endif %}"
+                    href="?q={{ search_query|urlencode }}{% for brand_id in selected_brands %}&amp;brand={{ brand_id }}{% endfor %}{% for category_id in selected_categories %}&amp;category={{ category_id }}{% endfor %}&amp;min_price={{ min_price|urlencode }}&amp;max_price={{ max_price|urlencode }}&amp;page={{ page_number }}"
+                >
+                    {{ page_number }}
+                </a>
+            {% endfor %}
 
-        {% for page_number in page_obj.paginator.page_range %}
-        <a class="btn btn-sm {% if page_obj.number == page_number %}btn-primary{% else %}btn-outline-secondary{% endif %}"
-            href="?q={{ search_query|urlencode }}{% for brand_id in selected_brands %}&brand={{ brand_id|urlencode }}{% endfor %}{% for category_id in selected_categories %}&category={{ category_id|urlencode }}{% endfor %}&min_price={{ min_price|urlencode }}&max_price={{ max_price|urlencode }}&page={{ page_number }}">
-            {{ page_number }}
-        </a>
-        {% endfor %}
-
-        {% if page_obj.has_next %}
-        <a class="btn btn-outline-secondary btn-sm"
-            href="?q={{ search_query|urlencode }}{% for brand_id in selected_brands %}&brand={{ brand_id|urlencode }}{% endfor %}{% for category_id in selected_categories %}&category={{ category_id|urlencode }}{% endfor %}&min_price={{ min_price|urlencode }}&max_price={{ max_price|urlencode }}&page={{ page_obj.next_page_number }}">
-            Next
-        </a>
-        {% endif %}
-
-    </div>
+            {% if page_obj.has_next %}
+                <a
+                    class="btn btn-outline-secondary btn-sm"
+                    href="?q={{ search_query|urlencode }}{% for brand_id in selected_brands %}&amp;brand={{ brand_id }}{% endfor %}{% for category_id in selected_categories %}&amp;category={{ category_id }}{% endfor %}&amp;min_price={{ min_price|urlencode }}&amp;max_price={{ max_price|urlencode }}&amp;page={{ page_obj.next_page_number }}"
+                >
+                    Next
+                </a>
+            {% endif %}
+        </div>
     {% endif %}
 
-
     <br>
     <br>
-
 </div>
 
 {% endblock %}
