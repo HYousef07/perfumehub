@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'cart',
     'imagekit',
     'orders',
+    'reviews',
 ]
 
 MIDDLEWARE = [
@@ -135,8 +136,10 @@ MAILERS = {
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
