@@ -1,3 +1,4 @@
+
 import uuid
 
 from django.conf import settings
@@ -23,6 +24,13 @@ class Order(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=20)
 
+    # Billing details
+    billing_address = models.CharField(max_length=250)
+    billing_city = models.CharField(max_length=100)
+    billing_postcode = models.CharField(max_length=20)
+    billing_country = models.CharField(max_length=100)
+
+    # Shipping details
     shipping_address = models.CharField(max_length=250)
     shipping_city = models.CharField(max_length=100)
     shipping_postcode = models.CharField(max_length=20)
@@ -35,7 +43,6 @@ class Order(models.Model):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
-
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -59,7 +66,6 @@ class OrderItem(models.Model):
     )
 
     perfume_name = models.CharField(max_length=200)
-
     quantity = models.PositiveIntegerField(default=1)
 
     price = models.DecimalField(
