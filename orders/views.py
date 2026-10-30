@@ -66,7 +66,6 @@ def checkout(request):
                         price=cart_item.perfume.price
                     )
 
-                cart_items.delete()
 
             return redirect(
                 'orders:order_confirmation',
