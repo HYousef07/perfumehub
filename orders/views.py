@@ -113,3 +113,17 @@ def order_history(request):
         'orders/order_history.html',
         {'orders': orders}
     )
+
+@login_required
+def order_details(request, order_number):
+    order = get_object_or_404(
+        Order.objects.prefetch_related('items'),
+        order_number=order_number,
+        customer=request.user
+    )
+
+    return render(
+        request,
+        'orders/order_details.html',
+        {'order': order}
+    )
