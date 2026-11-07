@@ -46,17 +46,14 @@ def checkout(request):
                     last_name=form.cleaned_data['last_name'],
                     email=form.cleaned_data['email'],
                     phone=form.cleaned_data['phone'],
-
                     billing_address=form.cleaned_data['billing_address'],
                     billing_city=form.cleaned_data['billing_city'],
                     billing_postcode=form.cleaned_data['billing_postcode'],
                     billing_country=form.cleaned_data['billing_country'],
-
                     shipping_address=form.cleaned_data['shipping_address'],
                     shipping_city=form.cleaned_data['shipping_city'],
                     shipping_postcode=form.cleaned_data['shipping_postcode'],
                     shipping_country=form.cleaned_data['shipping_country'],
-
                     total=total,
                     payment_status='pending'
                 )
@@ -70,7 +67,6 @@ def checkout(request):
                         price=cart_item.perfume.price
                     )
 
-            # Create Stripe Checkout Session
             stripe.api_key = settings.STRIPE_SECRET_KEY
 
             line_items = []
@@ -97,7 +93,10 @@ def checkout(request):
                     ) + '?session_id={CHECKOUT_SESSION_ID}'
                 ),
                 cancel_url=request.build_absolute_uri(
-                    reverse('orders:checkout')
+                    reverse(
+                        'orders:payment_cancel',
+                        kwargs={'order_number': order.order_number}
+                    )
                 ),
                 client_reference_id=str(order.order_number),
                 metadata={
@@ -133,19 +132,18 @@ def payment_success(request):
 
     stripe.api_key = settings.STRIPE_SECRET_KEY
 
-    session = stripe.checkout.Session.retrieve(session_id)
-
     order = get_object_or_404(
         Order,
         stripe_session_id=session_id,
         customer=request.user
     )
 
+    session = stripe.checkout.Session.retrieve(session_id)
+
     if session.payment_status == 'paid':
         order.payment_status = 'paid'
         order.save(update_fields=['payment_status'])
 
-        # Empty the cart only after successful payment
         try:
             cart = Cart.objects.get(cart_id=_cart_id(request))
             CartItem.objects.filter(
@@ -160,7 +158,29 @@ def payment_success(request):
             order_number=order.order_number
         )
 
-    return redirect('orders:checkout')
+    return redirect(
+        'orders:payment_cancel',
+        order_number=order.order_number
+    )
+
+
+@login_required
+def payment_cancel(request, order_number):
+    order = get_object_or_404(
+        Order,
+        order_number=order_number,
+        customer=request.user
+    )
+
+    if order.payment_status == 'pending':
+        order.payment_status = 'failed'
+        order.save(update_fields=['payment_status'])
+
+    return render(
+        request,
+        'orders/payment_failed.html',
+        {'order': order}
+    )
 
 
 @login_required
@@ -189,6 +209,7 @@ def order_history(request):
         'orders/order_history.html',
         {'orders': orders}
     )
+
 
 @login_required
 def order_details(request, order_number):
