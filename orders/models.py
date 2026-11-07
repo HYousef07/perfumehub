@@ -41,7 +41,22 @@ class Order(models.Model):
         decimal_places=2,
         default=0
     )
+    
+    payment_status = models.CharField(
+    max_length=20,
+    choices=[
+        ('pending', 'Pending'),
+        ('paid', 'Paid'),
+        ('failed', 'Failed'),
+    ],
+    default='pending'
+    )
 
+    stripe_session_id = models.CharField(
+    max_length=255,
+    blank=True,
+    null=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
