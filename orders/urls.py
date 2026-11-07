@@ -21,4 +21,9 @@ urlpatterns = [
         views.order_details,
         name='order_details'
     ),
+    path(
+    'payment-cancel/<uuid:order_number>/',
+    views.payment_cancel,
+    name='payment_cancel'
+    ),
 ]
