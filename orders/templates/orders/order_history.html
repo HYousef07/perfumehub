@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Order History - Scently
+{% endblock %}
+
+{% block content %}
+
+<div class="container my-5">
+
+    <h1 class="mb-4">My Order History</h1>
+
+    {% if orders %}
+
+    {% for order in orders %}
+
+    <div class="card mb-4 shadow-sm">
+
+        <div class="card-body">
+
+            <h5 class="card-title">
+                Order #{{ order.order_number }}
+            </h5>
+
+            <p class="text-muted">
+                Ordered on: {{ order.created_at|date:"d M Y" }}
+            </p>
+
+            <h5>
+                Total: €{{ order.total }}
+            </h5>
+
+            <a href="{% url 'orders:order_details' order.order_number %}" class="btn btn-primary btn-sm mt-2">
+                View Order Details
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+    {% else %}
+
+    <p>You haven't placed any orders yet.</p>
+
+    <a href="{% url 'perfumes:all_products' %}" class="btn btn-primary">
+        Continue Shopping
+    </a>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
