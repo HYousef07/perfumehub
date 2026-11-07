@@ -100,3 +100,16 @@ def order_confirmation(request, order_number):
         'orders/order_confirmation.html',
         {'order': order}
     )
+
+
+@login_required
+def order_history(request):
+    orders = Order.objects.filter(
+        customer=request.user
+    )
+
+    return render(
+        request,
+        'orders/order_history.html',
+        {'orders': orders}
+    )
