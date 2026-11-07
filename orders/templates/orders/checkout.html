@@ -1,4 +1,3 @@
-
 {% extends "base.html" %}
 
 {% block title %}
@@ -19,29 +18,115 @@ Checkout - Scently
 
                 <h3>Customer Details</h3>
 
-                {% for field in form %}
-                    <div class="mb-3">
-                        <label for="{{ field.id_for_label }}"
-                               class="form-label">
-                            {{ field.label }}
-                        </label>
+                <div class="mb-3">
+                    {{ form.first_name.label_tag }}
+                    {{ form.first_name }}
+                    {% for error in form.first_name.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
 
-                        {{ field }}
+                <div class="mb-3">
+                    {{ form.last_name.label_tag }}
+                    {{ form.last_name }}
+                    {% for error in form.last_name.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
 
-                        {% if field.errors %}
-                            <div class="text-danger">
-                                {{ field.errors }}
-                            </div>
-                        {% endif %}
-                    </div>
-                {% endfor %}
+                <div class="mb-3">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                    {% for error in form.email.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.phone.label_tag }}
+                    {{ form.phone }}
+                    {% for error in form.phone.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <hr>
+
+                <h3>Billing Address</h3>
+
+                <div class="mb-3">
+                    {{ form.billing_address.label_tag }}
+                    {{ form.billing_address }}
+                    {% for error in form.billing_address.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.billing_city.label_tag }}
+                    {{ form.billing_city }}
+                    {% for error in form.billing_city.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.billing_postcode.label_tag }}
+                    {{ form.billing_postcode }}
+                    {% for error in form.billing_postcode.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.billing_country.label_tag }}
+                    {{ form.billing_country }}
+                    {% for error in form.billing_country.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <hr>
+
+                <h3>Shipping Address</h3>
+
+                <div class="mb-3">
+                    {{ form.shipping_address.label_tag }}
+                    {{ form.shipping_address }}
+                    {% for error in form.shipping_address.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.shipping_city.label_tag }}
+                    {{ form.shipping_city }}
+                    {% for error in form.shipping_city.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.shipping_postcode.label_tag }}
+                    {{ form.shipping_postcode }}
+                    {% for error in form.shipping_postcode.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.shipping_country.label_tag }}
+                    {{ form.shipping_country }}
+                    {% for error in form.shipping_country.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
 
                 <button type="submit" class="btn btn-primary">
                     Place Order
                 </button>
 
-                <a href="{% url 'cart:cart_detail' %}"
-                   class="btn btn-secondary">
+                <a href="{% url 'cart:cart_detail' %}" class="btn btn-secondary">
                     Return to Cart
                 </a>
 
@@ -64,11 +149,11 @@ Checkout - Scently
 
                 <tbody>
                     {% for item in cart_items %}
-                        <tr>
-                            <td>{{ item.perfume.name }}</td>
-                            <td>{{ item.quantity }}</td>
-                            <td>€{{ item.sub_total|floatformat:2 }}</td>
-                        </tr>
+                    <tr>
+                        <td>{{ item.perfume.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>€{{ item.sub_total|floatformat:2 }}</td>
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>
